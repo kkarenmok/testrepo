@@ -85,7 +85,7 @@ button:hover { filter: brightness(0.97); }
 }
 .layout {
   display: grid;
-  grid-template-columns: minmax(520px, 1fr) 420px;
+  grid-template-columns: minmax(0, 1fr) 420px;
   gap: 28px;
   align-items: start;
 }
@@ -93,21 +93,21 @@ button:hover { filter: brightness(0.97); }
   background: var(--paper);
   border: 1px solid var(--line);
   padding: 18px;
-  overflow-x: auto;
+  container-type: inline-size;
 }
 .crossword {
   display: grid;
   gap: 0;
   margin: 0 auto;
-  width: fit-content;
+  width: 100%;
+  max-width: 700px;
   border: 2px solid var(--ink);
 }
 .cell {
-  width: 28px;
-  height: 28px;
   position: relative;
   border: 1px solid var(--ink);
   background: white;
+  min-width: 0;
 }
 .cell.block {
   background: var(--soft);
@@ -120,7 +120,7 @@ button:hover { filter: brightness(0.97); }
   text-align: center;
   font-family: Arial, sans-serif;
   font-weight: 600;
-  font-size: 16px;
+  font-size: clamp(6px, 3.1cqw, 16px);
   text-transform: uppercase;
   background: transparent;
   outline: none;
@@ -131,7 +131,7 @@ button:hover { filter: brightness(0.97); }
   position: absolute;
   left: 2px;
   top: 1px;
-  font-size: 8px;
+  font-size: clamp(4px, 0.9cqw, 8px);
   font-family: Arial, sans-serif;
   color: #555;
   line-height: 1;
@@ -187,6 +187,10 @@ li strong {
 @media (max-width: 1000px) {
   .layout { grid-template-columns: 1fr; }
   .clues { border-left: none; border-top: 3px solid var(--gold); padding-left: 0; padding-top: 18px; }
+}
+@media (max-width: 600px) {
+  .page { padding: 24px 10px 36px; }
+  .grid-wrap { padding: 8px; }
 }
 @media print {
   @page { size: A1 portrait; margin: 18mm; }
@@ -256,7 +260,9 @@ function buildGrid() {
   const grid = document.getElementById('crossword');
   const rows = puzzle.letters.length;
   const cols = puzzle.letters[0].length;
-  grid.style.gridTemplateColumns = `repeat(${cols}, 28px)`;
+  grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+  grid.style.aspectRatio = `${cols} / ${rows}`;
   grid.dataset.rows = rows;
   grid.dataset.cols = cols;
 
