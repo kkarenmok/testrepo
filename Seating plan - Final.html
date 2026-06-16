@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Henry & Karen — Seating Plan · 27 June 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #b89a5a;
+    --gold-light: #e8d9b4;
+    --gold-pale: #f7f1e3;
+    --cream: #faf8f3;
+    --ink: #1a1714;
+    --muted: #6b6156;
+    --border: rgba(184,154,90,0.25);
+    --highlight: rgba(184,154,90,0.18);
+    --highlight-border: rgba(184,154,90,0.9);
+  }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  .header {
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: white;
+  }
+  .header .eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .header h1 em { font-style: italic; color: var(--gold); }
+  .header .date {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-top: 0.6rem;
+    font-weight: 400;
+  }
+
+  .search-wrap {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+  }
+  .search-inner {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+  }
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    pointer-events: none;
+    font-size: 15px;
+  }
+  .search-input {
+    width: 100%;
+    padding: 0.7rem 1rem 0.7rem 2.6rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--ink);
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--gold); }
+  .search-input::placeholder { color: #bbb; }
+  .clear-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 16px;
+    display: none;
+    padding: 2px 4px;
+    line-height: 1;
+  }
+  .clear-btn.visible { display: block; }
+
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0; right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    z-index: 200;
+    overflow: hidden;
+    display: none;
+  }
+  .dropdown.visible { display: block; }
+  .dropdown-item {
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(184,154,90,0.1);
+    transition: background 0.15s;
+    gap: 1rem;
+  }
+  .dropdown-item span:first-child {
+    flex: 1;
+  }
+  .dropdown-item:last-child { border-bottom: none; }
+  .dropdown-item:hover { background: var(--gold-pale); }
+  .dropdown-item .table-badge {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    font-weight: 400;
+  }
+  .search-status {
+    text-align: center;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    margin-top: 0.5rem;
+    min-height: 18px;
+    font-weight: 400;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .table-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .table-card.highlighted {
+    border-color: var(--highlight-border);
+    box-shadow: 0 0 0 3px rgba(184,154,90,0.15), 0 8px 28px rgba(184,154,90,0.18);
+    transform: translateY(-2px);
+  }
+  .table-card.dimmed {
+    opacity: 0.3;
+    filter: grayscale(40%);
+  }
+
+  .card-header {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0.85rem 1.1rem 0.7rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .card-header .circuit {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .card-header .table-num {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .guest-list {
+    list-style: none;
+    padding: 0.25rem 0;
+  }
+  .guest-list li {
+    padding: 0.35rem 1.1rem;
+    font-size: 13.5px;
+    font-weight: 300;
+    color: var(--ink);
+    border-bottom: 1px solid rgba(184,154,90,0.07);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.15s;
+    cursor: default;
+  }
+  .guest-list li:last-child { border-bottom: none; }
+  .guest-list li .seat-num {
+    font-size: 10px;
+    color: var(--gold);
+    font-weight: 400;
+    min-width: 16px;
+  }
+  .guest-list li.guest-match {
+    background: var(--highlight);
+    font-weight: 500;
+  }
+  .guest-list li.guest-match .guest-name {
+    color: #7a5a1a;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .grid { padding: 1rem; gap: 1rem; }
+    .header { padding: 2rem 1rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <p class="eyebrow">Wedding Seating Plan</p>
+  <h1>Karen <em>&</em> Henry</h1>
+  <p class="date">27 June 2026 &nbsp;·&nbsp; Queen's House, The Great Hall, Greenwich</p>
+</div>
+
+<div class="search-wrap">
+  <div>
+    <div class="search-inner">
+      <span class="search-icon">&#9906;</span>
+      <input type="text" class="search-input" id="guestSearch" placeholder="Find your seat…" autocomplete="off" spellcheck="false" />
+      <button class="clear-btn" id="clearBtn" aria-label="Clear search">✕</button>
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+    <p class="search-status" id="searchStatus"></p>
+  </div>
+</div>
+
+<div class="grid" id="tableGrid"></div>
+
+<footer>
+  Queen's House · The Great Hall · Greenwich · London SE10 9NF
+</footer>
+
+<script>
+const TABLES = [
+  {
+    circuit: "Silverstone",
+    number: 1,
+    guests: [
+      "Henry Weaver","Karen Weaver","Paul Weaver","Susie Weaver","Kenny Mok",
+      "Connie Yu","William Gregory","Ruth Gregory","Amy Yuen","Kai Sean"
+    ]
+  },
+  {
+    circuit: "Castle Combe",
+    number: 2,
+    guests: [
+      "Freddie Weaver","Eleanor Weaver","Rupert Weaver","Emily Weaver Roads",
+      "Michelle Sheppard","Thomas Sheppard","Sarah Puckle Hobbs","Ewan Puckle Hobbs",
+      "Jane Russett","Bob Russett"
+    ]
+  },
+  {
+    circuit: "Happy Valley",
+    number: 3,
+    guests: [
+      "Susanna Ng","Cannie Yu","Yan Lee","Kim Lee","Cecilia Mok",
+      "Gloria Lam","Carson Yu","Virginia Yu","Christy Yu","Matthew Ng"
+    ]
+  },
+  {
+    circuit: "Reims-Gueux",
+    number: 4,
+    guests: [
+      "Jay Swanston","Janie Swanston","Nigel Gregory","Yoklan Gregory",
+      "John Macgillivray","Sabrina Macgillivray","Nicholas Adams","Letitia Adams",
+      "Noel Llewelyn Usher","Caroline Llewelyn Usher"
+    ]
+  },
+  {
+    circuit: "Spa-Francorchamps",
+    number: 5,
+    guests: [
+      "Niki Blasina","Joseph Wren","Henri van Lennep","Jennifer Squire",
+      "Michael Squire","Michelle Lo","Cécile Rebbot","Simon Middleton","Silvia Middleton"
+    ]
+  },
+  {
+    circuit: "Red Bull Ring",
+    number: 6,
+    guests: [
+      "Anjani Knöbel","Mark Dejust","Nira Dejust","Katherine Jones","Sam Jones",
+      "Prakriti Thapa-Atkins","Andrew Atkins","Tim Yang","Stephanie Wen","Jeremy MacFarland"
+    ]
+  },
+  {
+    circuit: "Thruxton",
+    number: 7,
+    guests: [
+      "Matt Taylor","Michelle Taylor","Giles Malyon","Lauren Malyon","Andrew Mort",
+      "Callum Farrell-Morris","Andrew Nobrega","Vidya Nobrega","Alexander Swanston"
+    ]
+  },
+  {
+    circuit: "HK Harbourfront",
+    number: 8,
+    guests: [
+      "Fion Leung","Jimmy Lam","King Lam","Pearl Tam","Phiona Tam",
+      "Ryan Wong","Katrina Wan","Karen Chan","Derrick Lam"
+    ]
+  },
+  {
+    circuit: "Circuit of the Americas",
+    number: 9,
+    guests: [
+      "Milan Thakkar","Yier Cao","Shakib Pasha","Mitsuko Pasha","Nagehan Bell",
+      "Jason Bell","Kostis Akalestos","Elisavet Kodela","Chris Szarmach","Amy Switze"
+    ]
+  },
+  {
+    circuit: "Goodwood Circuit",
+    number: 10,
+    guests: [
+      "Andrea Ng","Duwane Lee","Danny Wan","Jiaru Hsieh","Will Chan",
+      "Heather Lee","Jennifer Suen","Reuben Chan","Roseanne Fu"
+    ]
+  },
+  {
+    circuit: "Marina Bay Street Circuit",
+    number: 11,
+    guests: [
+      "Berrin Teo-Ilis","Victor Teo-Ilis","Jerrine Chia","Marcus Ikin","Max Kassir",
+      "Fred Grappe","Pauline Lagarde","Irene Fung","Clare Mathevet","Jeremy Mathevet"
+    ]
+  },
+  {
+    circuit: "ExCeL ePrix",
+    number: 12,
+    guests: [
+      "Dai Duong","Basia Lukasik","Han Sen Kuan","Simina Istrate","Andrei Airimitoaie",
+      "Shyam Sadeesh","James Gutry","Naveed Amin","Richard Potter","Niva Reitz"
+    ]
+  }
+];
+
+const grid = document.getElementById('tableGrid');
+
+function renderTables(highlightName = null) {
+  grid.innerHTML = '';
+  TABLES.forEach(t => {
+    const hasMatch = highlightName && t.guests.some(g => g.toLowerCase() === highlightName.toLowerCase());
+    const card = document.createElement('div');
+    card.className = 'table-card' + (highlightName ? (hasMatch ? ' highlighted' : ' dimmed') : '');
+    card.id = 'table-' + t.number;
+
+    const header = document.createElement('div');
+    header.className = 'card-header';
+    header.innerHTML = `<span class="circuit">${t.circuit}</span><span class="table-num">Table ${t.number}</span>`;
+    card.appendChild(header);
+
+    const ul = document.createElement('ul');
+    ul.className = 'guest-list';
+    t.guests.forEach((g, i) => {
+      const li = document.createElement('li');
+      const isMatch = highlightName && g.toLowerCase() === highlightName.toLowerCase();
+      if (isMatch) li.classList.add('guest-match');
+      li.innerHTML = `<span class="seat-num">${i + 1}</span><span class="guest-name">${g}</span>`;
+      ul.appendChild(li);
+    });
+    card.appendChild(ul);
+    grid.appendChild(card);
+  });
+}
+
+renderTables();
+
+const input = document.getElementById('guestSearch');
+const dropdown = document.getElementById('dropdown');
+const clearBtn = document.getElementById('clearBtn');
+const status = document.getElementById('searchStatus');
+
+function allGuests() {
+  const list = [];
+  TABLES.forEach(t => t.guests.forEach(g => {
+    if (g) list.push({ name: g, circuit: t.circuit, number: t.number });
+  }));
+  return list;
+}
+
+function search(query) {
+  if (!query.trim()) { resetAll(); return; }
+  const q = query.toLowerCase().trim();
+  const matches = allGuests().filter(g => g.name.toLowerCase().includes(q));
+
+  clearBtn.classList.add('visible');
+  dropdown.innerHTML = '';
+
+  if (matches.length === 0) {
+    status.textContent = 'No guest found';
+    dropdown.classList.remove('visible');
+    renderTables();
+    return;
+  }
+
+  if (matches.length === 1) {
+    selectGuest(matches[0]);
+    dropdown.classList.remove('visible');
+    return;
+  }
+
+  matches.forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'dropdown-item';
+    div.innerHTML = `<span>${m.name}</span><span class="table-badge">Table ${m.number} · ${m.circuit}</span>`;
+    div.addEventListener('mousedown', e => {
+      e.preventDefault();
+      selectGuest(m);
+      input.value = m.name;
+      dropdown.classList.remove('visible');
+    });
+    dropdown.appendChild(div);
+  });
+  dropdown.classList.add('visible');
+  status.textContent = `${matches.length} guests found — select one`;
+  renderTables();
+}
+
+function selectGuest(guest) {
+  renderTables(guest.name);
+  status.textContent = `${guest.name} · Table ${guest.number} · ${guest.circuit}`;
+  dropdown.classList.remove('visible');
+  const el = document.getElementById('table-' + guest.number);
+  if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
+}
+
+function resetAll() {
+  renderTables();
+  dropdown.classList.remove('visible');
+  status.textContent = '';
+  clearBtn.classList.remove('visible');
+}
+
+input.addEventListener('input', () => search(input.value));
+input.addEventListener('focus', () => { if (input.value) search(input.value); });
+input.addEventListener('blur', () => setTimeout(() => dropdown.classList.remove('visible'), 150));
+clearBtn.addEventListener('click', () => { input.value = ''; resetAll(); input.focus(); });
+</script>
+</body>
+</html>
