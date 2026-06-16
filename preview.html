@@ -218,20 +218,6 @@ li strong {
   .page { padding: 1.5rem 1rem 0; }
   .grid-wrap { padding: 0.75rem; }
 }
-@media print {
-  @page { size: A1 portrait; margin: 18mm; }
-  body { background: white; }
-  .page { max-width: none; padding: 0; }
-  .controls, .status, .note { display: none !important; }
-  .layout { grid-template-columns: 1.1fr 0.9fr; gap: 22px; }
-  .grid-wrap { border: none; padding: 0; }
-  .cell { width: 24px; height: 24px; }
-  .cell input { font-size: 14px; color: transparent; }
-  .cell.correct, .cell.incorrect { background: white; }
-  .clues { break-inside: avoid; }
-  h1 { font-size: 54px; }
-  li { font-size: 13px; }
-}
 </style>
 </head>
 <body>
@@ -245,7 +231,6 @@ li strong {
     <button class="primary" onclick="checkAnswers()">Check Answers</button>
     <button onclick="clearAnswers()">Clear Answers</button>
     <button onclick="revealAnswers()">Reveal Answers</button>
-    <button onclick="window.print()">Print A1 Version</button>
   </div>
   <div class="status" id="status"></div>
 
