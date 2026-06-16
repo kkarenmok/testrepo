@@ -6,15 +6,16 @@
 <title>Karen and Henry's Wedding Crosswords</title>
 <style>
 :root {
-  --gold: #000;
-  --gold-dark: #000;
-  --ink: #000;
-  --muted: #555;
-  --paper: #fff;
-  --line: #bbb;
-  --soft: #fff;
-  --ok: #e6e6e6;
-  --bad: #999;
+  --gold: #b9944b;
+  --gold-dark: #8c6a2f;
+  --ink: #222;
+  --muted: #6e6658;
+  --paper: #fffdf8;
+  --line: #d7c39a;
+  --grid-line: #000;
+  --grid-block: #fff;
+  --grid-correct: #e6e6e6;
+  --grid-incorrect: #999;
 }
 * { box-sizing: border-box; }
 body {
@@ -101,17 +102,17 @@ button:hover { filter: brightness(0.97); }
   margin: 0 auto;
   width: 100%;
   max-width: 700px;
-  border: 2px solid var(--ink);
+  border: 2px solid var(--grid-line);
 }
 .cell {
   position: relative;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--grid-line);
   background: white;
   min-width: 0;
 }
 .cell.block {
-  background: var(--soft);
-  border-color: var(--soft);
+  background: var(--grid-block);
+  border-color: var(--grid-block);
 }
 .cell input {
   width: 100%;
@@ -124,9 +125,10 @@ button:hover { filter: brightness(0.97); }
   text-transform: uppercase;
   background: transparent;
   outline: none;
+  color: var(--grid-line);
 }
-.cell.correct { background: var(--ok); }
-.cell.incorrect { background: var(--bad); }
+.cell.correct { background: var(--grid-correct); }
+.cell.incorrect { background: var(--grid-incorrect); }
 .num {
   position: absolute;
   left: 2px;
@@ -256,6 +258,20 @@ li strong {
 <script>
 const puzzle = {"letters": [["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "B", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "Q", "U", "E", "E", "N", "S", "H", "O", "U", "S", "E", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "L", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "L", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "S", "", "", "", "N", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "J", "", "", "", "", "", "", "", "", "I", "", "", "", "G", "", "", "", "", "", "", ""], ["", "W", "O", "O", "D", "C", "O", "T", "E", "P", "A", "R", "K", "", "", "", "", "", "", "N", "U", "G", "G", "E", "T", "S", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "P", "", "", "", "", "", "", "", "", "G", "", "", "", "R", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "A", "", "", "V", "", "", "", "", "P", "A", "D", "I", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "H", "O", "N", "G", "K", "O", "N", "G", "", "K", "", "P", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "D", "", "", "", "", "", "", "D", "", "", "S", "A", "V", "O", "U", "R", "Y", "P", "R", "O", "J", "E", "C", "T", ""], ["", "", "", "", "", "", "I", "", "", "", "", "", "", "K", "", "", "", "R", "", "R", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "H", "E", "N", "R", "Y", "W", "I", "L", "L", "I", "A", "M", "S", "T", "E", "V", "E", "N", "S", "O", "N", "W", "E", "A", "V", "E", "R", ""], ["", "", "", "", "Q", "", "T", "", "H", "", "", "O", "", "R", "", "P", "", "N", "", "", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "U", "", "Y", "", "A", "", "", "B", "", "I", "", "A", "", "Y", "", "", "", "L", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "A", "", "M", "", "T", "", "", "S", "", "G", "", "F", "", "U", "", "", "C", "O", "T", "S", "W", "O", "L", "D", "", "", ""], ["", "", "", "", "L", "", "A", "", "S", "", "", "T", "", "A", "", "R", "", "E", "", "", "", "N", "", "I", "", "", "", "", "", "", ""], ["", "", "", "", "P", "", "R", "", "A", "", "", "E", "", "T", "", "A", "", "N", "", "D", "N", "D", "", "X", "", "", "", "", "", "", ""], ["", "", "", "", "A", "", "T", "", "P", "", "", "R", "", "O", "", "N", "", "Y", "", "", "", "O", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "R", "", "I", "", "P", "", "", "", "", "N", "", "C", "H", "I", "C", "K", "E", "N", "R", "I", "C", "E", "", "", "", "", ""], ["", "", "", "", "T", "", "N", "", "", "", "", "", "", "I", "", "O", "", "N", "", "", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "S", "", "I", "", "", "", "", "", "", "", "", "R", "", "G", "O", "N", "G", "J", "U", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "C", "", "M", "", "", "", "U", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "H", "", "O", "", "", "", "J", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "A", "", "K", "", "", "", "U", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "M", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "P", "E", "A", "N", "U", "T", "B", "U", "T", "T", "E", "R", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "S", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]], "entries": [{"answer": "HENRYWILLIAMSTEVENSONWEAVER", "clue": "Henry\u2019s full name", "row": 14, "col": 3, "dir": "A", "len": 27, "num": 13}, {"answer": "KARENYUENYINGMOK", "clue": "Karen\u2019s full name", "row": 11, "col": 17, "dir": "D", "len": 16, "num": 10}, {"answer": "SPAFRANCORCHAMPS", "clue": "Your most chaotic travel destination together", "row": 14, "col": 15, "dir": "D", "len": 16, "num": 17}, {"answer": "SAVOURYPROJECT", "clue": "Favourite bar in Hong Kong", "row": 12, "col": 16, "dir": "A", "len": 14, "num": 12}, {"answer": "VODKARIGATONI", "clue": "Henry\u2019s best dish in cooking", "row": 10, "col": 13, "dir": "D", "len": 13, "num": 7}, {"answer": "CHICKENRICE", "clue": "Henry\u2019s favourite dish from Karen", "row": 21, "col": 15, "dir": "A", "len": 11, "num": 22}, {"answer": "GONGJU", "clue": "Henry\u2019s most-used nickname for Karen", "row": 23, "col": 17, "dir": "A", "len": 6, "num": 23}, {"answer": "WHATSAPP", "clue": "The app you message each other on most", "row": 14, "col": 8, "dir": "D", "len": 8, "num": 15}, {"answer": "DIRTYMARTINI", "clue": "The drink most associated with your relationship", "row": 12, "col": 6, "dir": "D", "len": 12, "num": 11}, {"answer": "SINGAPORE", "clue": "First F1 race you watched live together", "row": 6, "col": 19, "dir": "D", "len": 9, "num": 3}, {"answer": "LOBSTER", "clue": "The dish you always argue about ordering", "row": 14, "col": 11, "dir": "D", "len": 7, "num": 16}, {"answer": "PADI", "clue": "Karen persuaded Henry to get certified in what?", "row": 10, "col": 18, "dir": "A", "len": 4, "num": 8}, {"answer": "LONDON", "clue": "A city that became your place", "row": 16, "col": 21, "dir": "D", "len": 6, "num": 18}, {"answer": "COTSWOLD", "clue": "Henry\u2019s home is in Cotswold", "row": 17, "col": 20, "dir": "A", "len": 8, "num": 19}, {"answer": "NUGGETS", "clue": "Karen\u2019s guilty pleasure", "row": 8, "col": 19, "dir": "A", "len": 7, "num": 6}, {"answer": "EQUALPARTS", "clue": "Favourite bar in London", "row": 14, "col": 4, "dir": "D", "len": 10, "num": 14}, {"answer": "PEANUTBUTTER", "clue": "Henry\u2019s guilty pleasure", "row": 28, "col": 15, "dir": "A", "len": 12, "num": 25}, {"answer": "BOLLINGER", "clue": "The Champagne you always order together", "row": 1, "col": 23, "dir": "D", "len": 9, "num": 1}, {"answer": "QUEENSHOUSE", "clue": "The first wedding venue you viewed", "row": 2, "col": 16, "dir": "A", "len": 11, "num": 2}, {"answer": "HONGKONG", "clue": "First overseas trip together", "row": 11, "col": 8, "dir": "A", "len": 8, "num": 9}, {"answer": "JUJU", "clue": "Karen\u2019s most-used nickname for Henry", "row": 23, "col": 21, "dir": "D", "len": 4, "num": 24}, {"answer": "SIX", "clue": "How many cars does Henry have?", "row": 17, "col": 23, "dir": "D", "len": 3, "num": 20}, {"answer": "JAPAN", "clue": "Country of your favourite trip together", "row": 7, "col": 10, "dir": "D", "len": 5, "num": 4}, {"answer": "DND", "clue": "Which bar did you first meet?", "row": 19, "col": 19, "dir": "A", "len": 3, "num": 21}, {"answer": "WOODCOTEPARK", "clue": "Where Henry proposed", "row": 8, "col": 1, "dir": "A", "len": 12, "num": 5}], "numbers": {"1,23": 1, "2,16": 2, "6,19": 3, "7,10": 4, "8,1": 5, "8,19": 6, "10,13": 7, "10,18": 8, "11,8": 9, "11,17": 10, "12,6": 11, "12,16": 12, "14,3": 13, "14,4": 14, "14,8": 15, "14,11": 16, "14,15": 17, "16,21": 18, "17,20": 19, "17,23": 20, "19,19": 21, "21,15": 22, "23,17": 23, "23,21": 24, "28,15": 25}};
 
+const cellDirs = {};
+puzzle.entries.forEach(entry => {
+  for (let i = 0; i < entry.len; i++) {
+    const r = entry.dir === 'D' ? entry.row + i : entry.row;
+    const c = entry.dir === 'A' ? entry.col + i : entry.col;
+    const key = `${r},${c}`;
+    if (!cellDirs[key]) cellDirs[key] = {};
+    cellDirs[key][entry.dir] = true;
+  }
+});
+
+let typingDir = 'A';
+let lastFocusKey = null;
+
 function buildGrid() {
   const grid = document.getElementById('crossword');
   const rows = puzzle.letters.length;
@@ -287,6 +303,7 @@ function buildGrid() {
         const input = document.createElement('input');
         input.maxLength = 1;
         input.setAttribute('aria-label', `row ${r+1} column ${c+1}`);
+        input.addEventListener('focus', () => updateTypingDir(r, c));
         input.addEventListener('input', e => {
           e.target.value = e.target.value.toUpperCase().replace(/[^A-Z]/g, '');
           cell.classList.remove('correct', 'incorrect');
@@ -307,21 +324,27 @@ function getInput(r,c) {
   const cell = getCell(r,c);
   return cell ? cell.querySelector('input') : null;
 }
-function focusNext(r,c) {
-  const cols = parseInt(document.getElementById('crossword').dataset.cols);
-  const rows = parseInt(document.getElementById('crossword').dataset.rows);
-  for (let i=r*cols+c+1; i<rows*cols; i++) {
-    const nr = Math.floor(i/cols), nc = i%cols;
-    const input = getInput(nr,nc);
-    if (input) { input.focus(); return; }
+function updateTypingDir(r, c) {
+  const key = `${r},${c}`;
+  const dirs = cellDirs[key] || {};
+  if (dirs.A && dirs.D) {
+    if (key === lastFocusKey) typingDir = typingDir === 'A' ? 'D' : 'A';
+    else if (!dirs[typingDir]) typingDir = dirs.A ? 'A' : 'D';
+  } else {
+    typingDir = dirs.A ? 'A' : 'D';
   }
+  lastFocusKey = key;
+}
+function focusNext(r,c) {
+  const target = typingDir === 'A' ? getInput(r, c+1) : getInput(r+1, c);
+  if (target) target.focus();
 }
 function handleKey(e,r,c) {
   let target = null;
-  if (e.key === 'ArrowRight') target = getInput(r,c+1);
-  if (e.key === 'ArrowLeft') target = getInput(r,c-1);
-  if (e.key === 'ArrowDown') target = getInput(r+1,c);
-  if (e.key === 'ArrowUp') target = getInput(r-1,c);
+  if (e.key === 'ArrowRight') { target = getInput(r,c+1); typingDir = 'A'; }
+  if (e.key === 'ArrowLeft') { target = getInput(r,c-1); typingDir = 'A'; }
+  if (e.key === 'ArrowDown') { target = getInput(r+1,c); typingDir = 'D'; }
+  if (e.key === 'ArrowUp') { target = getInput(r-1,c); typingDir = 'D'; }
   if (target) { e.preventDefault(); target.focus(); }
 }
 
